@@ -16,7 +16,10 @@ public class Wheel : MonoBehaviour {
 		} else {
 			transform.position = colliderCenter - (wheelCollider.transform.up * wheelCollider.suspensionDistance);
 		}
+		// ハンドルを切った時の前輪の角度：WheelColliderを参照している
 		transform.rotation = wheelCollider.transform.rotation * Quaternion.Euler(rotation, wheelCollider.steerAngle, 0);
+		
+		// タイヤを回転させる
 		rotation += wheelCollider.rpm * (360 / 60) * Time.deltaTime;
 	}
 }

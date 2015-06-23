@@ -63,16 +63,19 @@ public class CarController : MonoBehaviour {
 			
 		} else {
 			isAccelOn = false;
-			
+			// アクセルオフで軽くブレーキング
 			if ( !isAccelOn ) {
-				wcFrontLeft.brakeTorque = wcFrontRight.brakeTorque = wcRearLeft.brakeTorque = wcRearRight.brakeTorque = brakePower * 0.8f;
+				wcFrontLeft.brakeTorque = wcFrontRight.brakeTorque = wcRearLeft.brakeTorque = wcRearRight.brakeTorque = brakePower * 0.6f;
 			}
 		}
 		
+		// ハンドル処理
 		float h = Input.GetAxis("Horizontal") + -Input.acceleration.y;
 		float angle = h * steerAngleMax;
 		wcFrontLeft.steerAngle = angle;
 		wcFrontRight.steerAngle = angle;
+		
+		
 	}
 	
 	public bool IsAccelOn () {
