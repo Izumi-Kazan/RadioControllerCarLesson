@@ -17,48 +17,56 @@ public class CarController : MonoBehaviour {
 	private bool isAccelOn;
 	private bool isFoward;
 	private bool isBack;
-	
+
 	void Start () {
 		GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 	}
 	
 	void FixedUpdate () {
 		
+		
+		
 		if (Input.GetKey(KeyCode.W) || isFoward) {
 			isAccelOn = true;
 			float torue = enginePower;
 			float torueIdle = enginePower * 0.2f;
-
-			wcFrontLeft.motorTorque = torue;
-			wcFrontRight.motorTorque = torue;
-			wcRearLeft.motorTorque = torue;
-			wcRearRight.motorTorque = torue;
-			//  wcFrontLeft.motorTorque = (wcFrontLeft.isGrounded) ? torue : torueIdle;
-			//  wcFrontRight.motorTorque = (wcFrontRight.isGrounded) ? torue : torueIdle;
-			//  wcRearLeft.motorTorque = (wcRearLeft.isGrounded) ? torue : torueIdle;
-			//  wcRearRight.motorTorque = (wcRearRight.isGrounded) ? torue : torueIdle;
 			
-			Debug.Log("W:" + wcFrontLeft.motorTorque);
+			// ブレーキは必ず解除してやらないと動かなくなる
+			wcFrontLeft.brakeTorque = wcFrontRight.brakeTorque = wcRearLeft.brakeTorque = wcRearRight.brakeTorque = 0;
+			
+			wcFrontLeft.motorTorque = (wcFrontLeft.isGrounded) ? torue : torueIdle;
+			wcFrontRight.motorTorque = (wcFrontRight.isGrounded) ? torue : torueIdle;
+			wcRearLeft.motorTorque = (wcRearLeft.isGrounded) ? torue : torueIdle;
+			wcRearRight.motorTorque = (wcRearRight.isGrounded) ? torue : torueIdle;
 			
 		} else if (Input.GetKey(KeyCode.S) || isBack) {
 			isAccelOn = true;
 			float torue = enginePower * -0.8f;
 			float torueIdle = enginePower * -0.2f;
+			
+			// ブレーキは必ず解除してやらないと動かなくなる
+			wcFrontLeft.brakeTorque = wcFrontRight.brakeTorque = wcRearLeft.brakeTorque = wcRearRight.brakeTorque = 0;
+			
 			wcFrontLeft.motorTorque = (wcFrontLeft.isGrounded) ? torue : torueIdle;
 			wcFrontRight.motorTorque = (wcFrontRight.isGrounded) ? torue : torueIdle;
 			wcRearLeft.motorTorque = (wcRearLeft.isGrounded) ? torue : torueIdle;
 			wcRearRight.motorTorque = (wcRearRight.isGrounded) ? torue : torueIdle;
-		} else {
-			isAccelOn = false;
-			wcFrontLeft.motorTorque = 0;
-			wcFrontRight.motorTorque = 0;
-			wcRearLeft.motorTorque = 0;
-			wcRearRight.motorTorque = 0;
+			
+		} else if ( Input.GetKey( KeyCode.B )) {
 			
 			wcFrontLeft.brakeTorque = brakePower;
 			wcFrontRight.brakeTorque = brakePower;
 			wcRearLeft.brakeTorque = brakePower;
 			wcRearRight.brakeTorque = brakePower;
+			
+			Debug.Log( "Brake!!" + wcFrontLeft.brakeTorque );
+			
+		} else {
+			isAccelOn = false;
+			
+			if ( !isAccelOn ) {
+				wcFrontLeft.brakeTorque = wcFrontRight.brakeTorque = wcRearLeft.brakeTorque = wcRearRight.brakeTorque = brakePower * 0.8f;
+			}
 		}
 		
 		float h = Input.GetAxis("Horizontal") + -Input.acceleration.y;
@@ -80,10 +88,10 @@ public class CarController : MonoBehaviour {
 		return Mathf.Abs(wcFrontLeft.rpm + wcFrontRight.rpm + wcRearLeft.rpm + wcRearRight.rpm) * 0.25f;
 	}
 	
-//  #if UNITY_IPHONE || UNITY_ANDROID
-//  	void OnGUI () {
-//  		isFoward = GUI.RepeatButton(new Rect(Screen.width - 80, Screen.height - 160, 80, 70), "GO");
-//  		isBack = GUI.RepeatButton(new Rect(Screen.width - 80, Screen.height - 80, 80, 70), "BACK");
-//  	}
-//  #endif
+#if UNITY_IPHONE || UNITY_ANDROID
+	void OnGUI () {
+		isFoward = GUI.RepeatButton(new Rect(Screen.width - 80, Screen.height - 160, 80, 70), "GO");
+		isBack = GUI.RepeatButton(new Rect(Screen.width - 80, Screen.height - 80, 80, 70), "BACK");
+	}
+#endif
 }
