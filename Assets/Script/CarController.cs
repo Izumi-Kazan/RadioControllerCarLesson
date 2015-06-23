@@ -28,12 +28,17 @@ public class CarController : MonoBehaviour {
 			isAccelOn = true;
 			float torue = enginePower;
 			float torueIdle = enginePower * 0.2f;
-			wcFrontLeft.motorTorque = (wcFrontLeft.isGrounded) ? torue : torueIdle;
-			wcFrontRight.motorTorque = (wcFrontRight.isGrounded) ? torue : torueIdle;
-			wcRearLeft.motorTorque = (wcRearLeft.isGrounded) ? torue : torueIdle;
-			wcRearRight.motorTorque = (wcRearRight.isGrounded) ? torue : torueIdle;
+
+			wcFrontLeft.motorTorque = torue;
+			wcFrontRight.motorTorque = torue;
+			wcRearLeft.motorTorque = torue;
+			wcRearRight.motorTorque = torue;
+			//  wcFrontLeft.motorTorque = (wcFrontLeft.isGrounded) ? torue : torueIdle;
+			//  wcFrontRight.motorTorque = (wcFrontRight.isGrounded) ? torue : torueIdle;
+			//  wcRearLeft.motorTorque = (wcRearLeft.isGrounded) ? torue : torueIdle;
+			//  wcRearRight.motorTorque = (wcRearRight.isGrounded) ? torue : torueIdle;
 			
-			Debug.Log("W");
+			Debug.Log("W:" + wcFrontLeft.motorTorque);
 			
 		} else if (Input.GetKey(KeyCode.S) || isBack) {
 			isAccelOn = true;
