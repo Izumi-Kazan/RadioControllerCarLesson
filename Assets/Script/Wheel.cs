@@ -9,17 +9,24 @@ public class Wheel : MonoBehaviour {
 	private WheelHit hit;
 
 	void Update () {
-		Vector3 colliderCenter = wheelCollider.transform.TransformPoint(wheelCollider.center);
 		
-		if (wheelCollider.GetGroundHit(out hit)) {
-			transform.position = hit.point + (wheelCollider.transform.up * wheelCollider.radius);
-		} else {
-			transform.position = colliderCenter - (wheelCollider.transform.up * wheelCollider.suspensionDistance);
-		}
-		// ハンドルを切った時の前輪の角度：WheelColliderを参照している
+		Quaternion quat;
+        Vector3 position;
+		// ホイールコライダの位置と回転をワールド座標系で取得する
+        wheelCollider.GetWorldPose(out position, out quat);
+		
+		//  Vector3 colliderCenter = wheelCollider.transform.TransformPoint(wheelCollider.center);
+		//  if (wheelCollider.GetGroundHit(out hit)) {
+		
+			// 位置の更新
+			transform.position = position;
+		//  } else {
+		//  	transform.position = colliderCenter - (wheelCollider.transform.up * wheelCollider.suspensionDistance);
+		//  }
+		// ハンドルを切る：WheelColliderを参照している：ハンドルを切ったホイールコライダーのみ反応
 		transform.rotation = wheelCollider.transform.rotation * Quaternion.Euler(rotation, wheelCollider.steerAngle, 0);
 		
 		// タイヤを回転させる
-		rotation += wheelCollider.rpm * (360 / 60) * Time.deltaTime;
+		transform.rotation = quat;
 	}
 }
