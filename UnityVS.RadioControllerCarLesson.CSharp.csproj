@@ -72,7 +72,6 @@
     <Compile Include="Assets\Script\CarController.cs" />
     <Compile Include="Assets\Script\EngineSound.cs" />
     <Compile Include="Assets\Script\LookAtCar.cs" />
-    <Compile Include="Assets\Script\SimpleCarController.cs" />
     <Compile Include="Assets\Script\Wheel.cs" />
   </ItemGroup>
   <ItemGroup>
